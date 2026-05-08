@@ -778,6 +778,7 @@ class ET(Inverter):
             self._has_battery2 = True
 
         if is_745_platform(self) or self.rated_power >= 15000:
+            logger.debug("We are 745 platform")
             self._has_mppt = True
             self._has_meter_extended = True
             self._has_meter_extended2 = True
@@ -790,6 +791,24 @@ class ET(Inverter):
         try:
             await self._read_from_socket(self._read_command(47547, 6))
             self._settings.update({s.id_: s for s in self.__settings_arm_fw_19})
+            response = await self._read_from_socket(self._read_command(47547, 1))
+            response = response.response_data()
+            logger.error(f"Reg 47547 is 0x{response.hex()}")
+            response = await self._read_from_socket(self._read_command(47548, 1))
+            response = response.response_data()
+            logger.error(f"Reg 47548 is 0x{response.hex()}")
+            response = await self._read_from_socket(self._read_command(47549, 1))
+            response = response.response_data()
+            logger.error(f"Reg 47549 is 0x{response.hex()}")
+            response = await self._read_from_socket(self._read_command(47550, 1))
+            response = response.response_data()
+            logger.error(f"Reg 47550 is 0x{response.hex()}")
+            response = await self._read_from_socket(self._read_command(47551, 1))
+            response = response.response_data()
+            logger.error(f"Reg 47551 is 0x{response.hex()}")
+            response = await self._read_from_socket(self._read_command(47552, 1))
+            response = response.response_data()
+            logger.error(f"Reg 47552 is 0x{response.hex()}")
         except RequestRejectedException as ex:
             if ex.message == ILLEGAL_DATA_ADDRESS:
                 logger.debug(
